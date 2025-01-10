@@ -2,10 +2,11 @@ import pygame
 import const
 import calculation
 from classes import *
+from datetime import datetime
 
-screen = pygame.display.set_mode((const.screen_width, const.screen_height))
 
-def draw_cell(cell: Cell):
+
+def draw_cell(cell: Cell, screen):
     x = cell.x * const.CELL_SIZE
     y = cell.y * const.CELL_SIZE
 
@@ -29,7 +30,11 @@ def draw_cell(cell: Cell):
     if cell.walls[CellSide.right]:
         pygame.draw.line(screen,const.WALL_LINE_COLOR,(x + const.CELL_SIZE, y), (x + const.CELL_SIZE, y + const.CELL_SIZE), const.WALL_LINE_THICKNESS)
         
-def draw_cells():
+def draw_cells(screen):
     for cell in calculation.grid:
-        draw_cell(cell)  
+        draw_cell(cell, screen)
     pygame.display.flip()
+    
+def save_image(screen):
+    image_name = f'image_{datetime.now().time()}'.replace(':', '_').replace('.', '_') + '.jpg' 
+    pygame.image.save(screen, image_name)
