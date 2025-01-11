@@ -1,24 +1,24 @@
-import const
 from classes import *
 import drawer
 import random
 import pygame
+import settings
 
-
-rand_pos = random.randint(0, const.MAZE_HEIGHT * const.MAZE_WIDTH)
 
 grid = []
 visited = []
+
 def generate_grid():
     grid.clear()
-    for y in range(const.MAZE_HEIGHT):
-        for x in range(const.MAZE_WIDTH):
+    for y in range(settings.maze_height):
+        for x in range(settings.maze_width):
             grid.append(Cell(x,y))
+    return random.randint(0, settings.maze_height * settings.maze_width)
 
 def check_cell(x,y):
-    index = y * const.MAZE_WIDTH + x
+    index = y * settings.maze_width + x
 
-    if x >= const.MAZE_WIDTH or x < 0 or y >= const.MAZE_HEIGHT or y < 0 or grid[index].visited:
+    if x >= settings.maze_width or x < 0 or y >= settings.maze_height or y < 0 or grid[index].visited:
         return None
     else:
         return(grid[index])
@@ -41,7 +41,7 @@ def break_wall(next_cell, current_cell):
         next_cell.walls[CellSide.bottom] = False
     
 def prepare_maze(screen, instant_appearance):
-    generate_grid()
+    rand_pos = generate_grid()
     clock = pygame.time.Clock()
     CurrentCell = grid[rand_pos]
     
@@ -71,7 +71,7 @@ def prepare_maze(screen, instant_appearance):
         
           
         if not instant_appearance:
-            clock.tick(const.CLOCK_TICK)
+            clock.tick(settings.clock_tick)
             drawer.draw_cells(screen)
         
         if len(visited) == 0:
@@ -79,7 +79,8 @@ def prepare_maze(screen, instant_appearance):
         
     if instant_appearance:
         drawer.draw_cells(screen)
-    # drawer.save_image()
+        
+    # drawer.save_image(screen)
        
         
     
